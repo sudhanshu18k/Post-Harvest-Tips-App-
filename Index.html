@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CropKeeper - Post-Harvest Preservation Guide</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <div class="logo-icon">🌾</div>
+      <span>CropKeeper</span>
+    </div>
+    <button class="theme-toggle" id="themeToggle">🌙</button>
+  </header>
+
+  <div class="container">
+    <section class="hero">
+      <h1>Preserve Your Harvest, Reduce Food Waste</h1>
+      <p>
+        Discover effective methods to store and preserve your crops after
+        harvest. Extend shelf life, maintain quality, and reduce post-harvest
+        losses with our expert guidance.
+      </p>
+    </section>
+
+    <section class="search-container">
+      <h2>Find Storage & Preservation Methods</h2>
+      <div class="search-box">
+        <input type="text" id="cropSearch" placeholder="Search for a crop (e.g., tomatoes, maize, potatoes)" />
+        <button id="searchBtn">Search</button>
+      </div>
+      <div class="popular-searches">
+        <span>Tomatoes</span>
+        <span>Rice</span>
+        <span>Potatoes</span>
+        <span>Maize</span>
+        <span>Onions</span>
+        <span>Beans</span>
+      </div>
+    </section>
+
+    <section class="results-container" id="resultsContainer">
+      <h2>Search Results</h2>
+      <div class="crop-result">
+        <div class="crop-image">🍅</div>
+        <div class="crop-info">
+          <h3>Tomatoes</h3>
+          <p>
+            Freshly harvested tomatoes can be stored in several ways depending
+            on ripeness and intended use. Proper storage can extend shelf life
+            while maintaining flavor and nutritional value.
+          </p>
+          <div class="storage-conditions">
+            <div class="condition">
+              <span>Temperature</span>
+              <span>13-21°C</span>
+            </div>
+            <div class="condition">
+              <span>Humidity</span>
+              <span>85-95%</span>
+            </div>
+            <div class="condition">
+              <span>Storage Life</span>
+              <span>1-2 weeks</span>
+            </div>
+          </div>
+          <h4>Recommended Methods:</h4>
+          <ul>
+            <li>Room temperature storage (for ripening)</li>
+            <li>Refrigeration (for fully ripe tomatoes)</li>
+            <li>Canning (for long-term preservation)</li>
+            <li>Sun drying or dehydration</li>
+            <li>Freezing (blanched or as sauce)</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ✅ Updated Preservation Methods Section -->
+    <section class="methods-container" style="padding: 2rem;">
+      <h2>Preservation Methods</h2>
+      <div class="methods-tabs">
+        <div class="tab active" data-method="All Methods">All Methods</div>
+        <div class="tab" data-method="Drying">Drying</div>
+        <div class="tab" data-method="Cold Storage">Cold Storage</div>
+        <div class="tab" data-method="Canning">Canning</div>
+        <div class="tab" data-method="Fermentation">Fermentation</div>
+      </div>
+      <div class="methods-grid" id="methodsGrid">
+        <!-- Dynamic cards will appear here -->
+      </div>
+    </section>
+  </div>
+
+  <!-- Chatbot Section -->
+  <div class="chatbot-container">
+    <div id="chatbot-icon" class="chatbot-icon" onclick="toggleChat()">
+      <img src="bot-icon.png" alt="Chatbot Icon">
+    </div>
+    <div id="chatbot-window" class="chatbot-window">
+      <div class="chat-header">
+        <h3>Chat with Us!</h3>
+        <button class="close-btn" onclick="toggleChat()">X</button>
+      </div>
+      <div class="chat-content" id="chat-content">
+        <p>Welcome! How can I assist you?</p>
+      </div>
+      <input type="text" id="user-input" placeholder="Type a message..." onkeydown="sendMessage(event)">
+    </div>
+  </div>
+
+  <!-- JavaScript for Tabs -->
+  <script>
+    const tabs = document.querySelectorAll(".methods-tabs .tab");
+    const methodsGrid = document.getElementById("methodsGrid");
+
+    const methodData = {
+      "All Methods": [
+        {
+          title: "Sun Drying",
+          desc: "A traditional method that uses sunlight to remove moisture from foods.",
+          img: "sun-drying.jpg"
+        },
+        {
+          title: "Cold Storage",
+          desc: "Preserves freshness by slowing down enzymatic changes.",
+          img: "cold-storage.jpg"
+        }
+      ],
+      "Drying": [
+        {
+          title: "Sun Drying",
+          desc: "A traditional method using sunlight to reduce moisture.",
+          img: "sun-drying.jpg"
+        },
+        {
+          title: "Dehydration",
+          desc: "Machine-based drying for longer shelf life.",
+          img: "dehydration.jpg"
+        }
+      ],
+      "Cold Storage": [
+        {
+          title: "Refrigeration",
+          desc: "Keeps perishables fresh for days or weeks.",
+          img: "refrigeration.jpg"
+        },
+        {
+          title: "Freezing",
+          desc: "Extends life by stopping microbial activity.",
+          img: "freezing.jpg"
+        }
+      ],
+      "Canning": [
+        {
+          title: "Water Bath Canning",
+          desc: "Used for high-acid foods like fruits and pickles.",
+          img: "canning.jpg"
+        },
+        {
+          title: "Pressure Canning",
+          desc: "Best for low-acid vegetables, meats, and soups.",
+          img: "pressure-canning.jpg"
+        }
+      ],
+      "Fermentation": [
+        {
+          title: "Lactic Acid Fermentation",
+          desc: "Preserves food by converting sugars to acid.",
+          img: "fermentation.jpg"
+        },
+        {
+          title: "Pickling",
+          desc: "Uses vinegar or brine to preserve vegetables.",
+          img: "pickling.jpg"
+        }
+      ]
+    };
+
+    function renderCards(category) {
+      const cards = methodData[category] || [];
+      methodsGrid.innerHTML = cards.map(item => `
+        <div class="method-card">
+          <div class="method-image">
+            <img src="${item.img}" alt="${item.title}" />
+          </div>
+          <div class="method-content">
+            <h3>${item.title}</h3>
+            <p>${item.desc}</p>
+            <a href="#">Learn more →</a>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    tabs.forEach(tab => {
+      tab.addEventListener("click", () => {
+        tabs.forEach(t => t.classList.remove("active"));
+        tab.classList.add("active");
+        renderCards(tab.dataset.method);
+      });
+    });
+
+    // Initial load
+    renderCards("All Methods");
+  </script>
+
+  <!-- Optional: Link your JS file -->
+  <script src="hack.js"></script>
+
+  <footer>
+    <p>© 2025 CropKeeper | Post-Harvest Preservation Guide</p>
+  </footer>
+</body>
+</html>
